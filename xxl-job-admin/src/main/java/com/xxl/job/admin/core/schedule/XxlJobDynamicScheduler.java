@@ -70,9 +70,11 @@ public final class XxlJobDynamicScheduler implements ApplicationContextAware {
     // ---------------------- init + destroy ----------------------
     public void init() throws Exception {
         // admin registry monitor run
+		// 启动自动注册线程，获取类型为自动注册的执行器信息，完成机器的自动注册与发现
         JobRegistryMonitorHelper.getInstance().start();
 
         // admin monitor run
+		// 启动失败日志监控线程
         JobFailMonitorHelper.getInstance().start();
 
         // admin-server(spring-mvc)

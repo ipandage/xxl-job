@@ -36,18 +36,24 @@ public class JobRegistryMonitorHelper {
 				while (!toStop) {
 					try {
 						// auto registry group
+						// 获取类型为自动注册的执行器地址列表
 						List<XxlJobGroup> groupList = XxlJobDynamicScheduler.xxlJobGroupDao.findByAddressType(0);
 						if (CollectionUtils.isNotEmpty(groupList)) {
 
 							// remove dead address (admin/executor)
+							// 删除90秒内没有更新信心的注册机器，90秒内没有心跳返回，代表机器出现故障
 							XxlJobDynamicScheduler.xxlJobRegistryDao.removeDead(RegistryConfig.DEAD_TIMEOUT);
 
 							// fresh online address (admin/executor)
 							HashMap<String, List<String>> appAddressMap = new HashMap<String, List<String>>();
+							//
 							List<XxlJobRegistry> list = XxlJobDynamicScheduler.xxlJobRegistryDao.findAll(RegistryConfig.DEAD_TIMEOUT);
 							if (list != null) {
+								// 循环注册机器列表，根据执行器不同，将这些机器列表区分拿出来
 								for (XxlJobRegistry item: list) {
+									// 判断该机器注册信息, RegistType 为 EXECUTOR ，EXECUTOR 代表机器是注册到执行器上的
 									if (RegistryConfig.RegistType.EXECUTOR.name().equals(item.getRegistryGroup())) {
+										// 获取注册的执行器KEY
 										String appName = item.getRegistryKey();
 										List<String> registryList = appAddressMap.get(appName);
 										if (registryList == null) {
@@ -57,6 +63,7 @@ public class JobRegistryMonitorHelper {
 										if (!registryList.contains(item.getRegistryValue())) {
 											registryList.add(item.getRegistryValue());
 										}
+										// 收集机器信息，根据执行器做区分
 										appAddressMap.put(appName, registryList);
 									}
 								}

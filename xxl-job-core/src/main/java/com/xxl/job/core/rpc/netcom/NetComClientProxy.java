@@ -45,16 +45,16 @@ public class NetComClientProxy implements FactoryBean<Object> {
 						
 						// request
 						RpcRequest request = new RpcRequest();
-	                    request.setServerAddress(serverAddress);
-	                    request.setCreateMillisTime(System.currentTimeMillis());
-	                    request.setAccessToken(accessToken);
-	                    request.setClassName(method.getDeclaringClass().getName());
-	                    request.setMethodName(method.getName());
-	                    request.setParameterTypes(method.getParameterTypes());
-	                    request.setParameters(args);
+	                    request.setServerAddress(serverAddress); // 服务器地址
+	                    request.setCreateMillisTime(System.currentTimeMillis()); // 创建时间，用户判断请求是否超时
+	                    request.setAccessToken(accessToken); // 数据校验
+	                    request.setClassName(method.getDeclaringClass().getName()); // 将目标类的class名称传递给执行器，让那边来创建对象，并执行逻辑代码
+	                    request.setMethodName(method.getName()); // 方法名称为run
+	                    request.setParameterTypes(method.getParameterTypes()); // 参数类型
+	                    request.setParameters(args); // 参数
 
 	                    // send
-	                    RpcResponse response = client.send(request);
+	                    RpcResponse response = client.send(request); // 发送http请求
 	                    
 	                    // valid response
 						if (response == null) {

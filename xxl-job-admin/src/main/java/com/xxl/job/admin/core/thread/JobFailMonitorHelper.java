@@ -69,7 +69,7 @@ public class JobFailMonitorHelper {
 
 									// job fail,
 
-									// 1、fail retry
+									// 1、fail retry 失败重试
 									XxlJobInfo info = XxlJobDynamicScheduler.xxlJobInfoDao.loadById(log.getJobId());
 
 									if (log.getExecutorFailRetryCount() > 0) {
@@ -79,7 +79,7 @@ public class JobFailMonitorHelper {
 										XxlJobDynamicScheduler.xxlJobLogDao.updateTriggerInfo(log);
 									}
 
-									// 2、fail alarm
+									// 2、fail alarm 失败报警
 									failAlarm(info, log);
 
 									logger.info(">>>>>>>>>>> job monitor, job fail, JobLogId:{}", jobLogId);

@@ -29,7 +29,7 @@ public class JettyServerHandler extends AbstractHandler {
 		// invoke
         RpcResponse rpcResponse = doInvoke(request);
 
-        // serialize response
+        // serialize response 序列化响应结果
         byte[] responseBytes = HessianSerializer.serialize(rpcResponse);
 		
 		response.setContentType("text/html;charset=utf-8");
@@ -45,6 +45,7 @@ public class JettyServerHandler extends AbstractHandler {
 	private RpcResponse doInvoke(HttpServletRequest request) {
 		try {
 			// deserialize request
+			// 读取请求数据
 			byte[] requestBytes = HttpClientUtil.readBytes(request);
 			if (requestBytes == null || requestBytes.length==0) {
 				RpcResponse rpcResponse = new RpcResponse();
@@ -53,7 +54,7 @@ public class JettyServerHandler extends AbstractHandler {
 			}
 			RpcRequest rpcRequest = (RpcRequest) HessianSerializer.deserialize(requestBytes, RpcRequest.class);
 
-			// invoke
+			// invoke 得到参数之后执行
 			RpcResponse rpcResponse = NetComServerFactory.invokeService(rpcRequest, null);
 			return rpcResponse;
 		} catch (Exception e) {

@@ -13,6 +13,12 @@ import java.io.IOException;
  */
 public class HessianSerializer  {
 
+	/**
+	 * 序列化
+	 * @param obj
+	 * @param <T>
+	 * @return
+	 */
 	public static <T> byte[] serialize(T obj){
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
 		Hessian2Output ho = new Hessian2Output(os);
@@ -37,6 +43,13 @@ public class HessianSerializer  {
 		}
 	}
 
+	/**
+	 * 反序列化
+	 * @param bytes
+	 * @param clazz
+	 * @param <T>
+	 * @return
+	 */
 	public static <T> Object deserialize(byte[] bytes, Class<T> clazz) {
 		ByteArrayInputStream is = new ByteArrayInputStream(bytes);
 		Hessian2Input hi = new Hessian2Input(is);

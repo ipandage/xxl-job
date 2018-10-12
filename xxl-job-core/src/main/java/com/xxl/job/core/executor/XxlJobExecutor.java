@@ -72,19 +72,19 @@ public class XxlJobExecutor implements ApplicationContextAware {
 
     // ---------------------- start + stop ----------------------
     public void start() throws Exception {
-        // init admin-client
+        // init admin-client 初始化调度中心的地址列表，通过NetComClientProxy 创建好adminBiz 实例
         initAdminBizList(adminAddresses, accessToken);
 
-        // init executor-jobHandlerRepository
+        // init executor-jobHandlerRepository 初始化所有带 JobHandler 的handle，根据name，放入一个ConcurrentHashMap
         initJobHandlerRepository(applicationContext);
 
-        // init logpath
+        // init logpath 初始化本地日志路径
         XxlJobFileAppender.initLogPath(logPath);
 
-        // init executor-server
+        // init executor-server 初始化本地jetty服务器
         initExecutorServer(port, ip, appName, accessToken);
 
-        // init JobLogFileCleanThread
+        // init JobLogFileCleanThread 启动一个线程，用来清理本地日志，默认保留最近一天的日志
         JobLogFileCleanThread.getInstance().start(logRetentionDays);
     }
     public void destroy(){
